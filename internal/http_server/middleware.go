@@ -12,7 +12,7 @@ func throttler(next http.Handler) http.Handler {
         atomic.AddInt32(&connections, 1)
         defer atomic.AddInt32(&connections, -1)
 
-        if atomic.LoadInt32(&connections) == int32(config.MaxInputRequests) {
+        if atomic.LoadInt32(&connections) >= int32(config.MaxInputRequests) {
             w.WriteHeader(http.StatusTooManyRequests)
             return
         }
