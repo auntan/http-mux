@@ -14,18 +14,15 @@ Response:
     "Responses": [
         {
             "Code": 200,
-            "Response": "/test?1",
-            "Error": null
+            "Response": "/test?1"
         },
         {
             "Code": 200,
-            "Response": "/test?2",
-            "Error": null
+            "Response": "/test?2"
         },
         {
             "Code": 200,
-            "Response": "/test?3",
-            "Error": null
+            "Response": "/test?3"
         }
     ]
 }
