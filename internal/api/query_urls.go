@@ -8,14 +8,14 @@ import (
 )
 
 type Response struct {
-    Responses []ResponseItem
-    Error     interface{}
+    Responses []ResponseItem `json:",omitempty"`
+    Error     interface{}    `json:",omitempty"`
 }
 
 type ResponseItem struct {
-    Code     int
-    Response json.RawMessage
-    Error    interface{}
+    Code     int             `json:",omitempty"`
+    Response json.RawMessage `json:",omitempty"`
+    Error    interface{}     `json:",omitempty"`
 }
 
 func QueryUrls(ctx context.Context, urls []string) Response {
