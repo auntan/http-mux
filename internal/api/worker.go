@@ -20,7 +20,7 @@ type workerItem struct {
 }
 
 func worker(ctx context.Context, parallel int, in <-chan workerItem) <-chan workerItem {
-	out := make(chan workerItem, 0)
+	out := make(chan workerItem)
 
 	go func() {
 		var wg sync.WaitGroup
