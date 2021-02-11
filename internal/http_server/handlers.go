@@ -2,9 +2,13 @@ package http_server
 
 import (
 	"encoding/json"
-	"http-mux/internal/api"
+	"fmt"
 	"net/http"
+	"net/url"
 	"time"
+
+	"http-mux/internal/api"
+	"http-mux/internal/config"
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -12,6 +16,11 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	var urls []string
 	err := decoder.Decode(&urls)
 	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	if err := validate(urls); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -36,4 +45,24 @@ func testHandler(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewEncoder(w).Encode(r.URL.RequestURI()); err != nil {
 		println(err.Error())
 	}
+}
+
+func validate(urls []string) error {
+	if len(urls) > config.MaxUrls {
+		return fmt.Errorf("too much urls, %v allowed but %v provided", config.MaxUrls, len(urls))
+	}
+
+	if len(urls) == 0 {
+		return fmt.Errorf("empty urls list")
+	}
+
+	for i := range urls {
+		_, err := url.Parse(urls[i])
+		if err != nil {
+			return fmt.Errorf("invalid url %q: %w", urls[i], err)
+		}
+
+	}
+
+	return nil
 }

@@ -3,8 +3,6 @@ package api
 import (
 	"context"
 	"encoding/json"
-	"fmt"
-	"net/url"
 
 	"http-mux/internal/config"
 )
@@ -21,12 +19,6 @@ type ResponseItem struct {
 }
 
 func QueryUrls(ctx context.Context, urls []string) Response {
-	if err := validate(urls); err != nil {
-		return Response{
-			Error: fmt.Sprintf("%v", err),
-		}
-	}
-
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
@@ -46,24 +38,4 @@ func QueryUrls(ctx context.Context, urls []string) Response {
 	}
 
 	return result
-}
-
-func validate(urls []string) error {
-	if len(urls) > config.MaxUrls {
-		return fmt.Errorf("too much urls, %v allowed but %v provided", config.MaxUrls, len(urls))
-	}
-
-	if len(urls) == 0 {
-		return fmt.Errorf("empty urls list")
-	}
-
-	for i := range urls {
-		_, err := url.Parse(urls[i])
-		if err != nil {
-			return fmt.Errorf("invalid url %q: %w", urls[i], err)
-		}
-
-	}
-
-	return nil
 }
