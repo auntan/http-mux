@@ -5,7 +5,7 @@ import (
 )
 
 func writer(urls []string) <-chan workerItem {
-	out := make(chan workerItem, 0)
+	out := make(chan workerItem)
 
 	go func() {
 		for i, v := range urls {
