@@ -12,7 +12,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	var urls []string
 	err := decoder.Decode(&urls)
 	if err != nil {
-		panic(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
