@@ -53,7 +53,7 @@ func doQuery(ctx context.Context, in workerItem) workerItem {
 		return result
 	}
 
-	req, err := http.NewRequest("GET", in.url, nil)
+	req, err := http.NewRequest(http.MethodGet, in.url, nil)
 	if err != nil {
 		result.response.Error = err
 		return result
@@ -71,7 +71,7 @@ func doQuery(ctx context.Context, in workerItem) workerItem {
 	}
 
 	result.response.Code = resp.StatusCode
-	if resp.StatusCode < 200 || resp.StatusCode > 300 {
+	if resp.StatusCode < http.StatusOK || resp.StatusCode > http.StatusMultipleChoices {
 		result.response.Error = fmt.Errorf("bad status code %v", resp.StatusCode)
 		return result
 	}
