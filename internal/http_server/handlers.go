@@ -21,7 +21,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(500)
 	}
 
-	_ = json.NewEncoder(w).Encode(response)
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		println(err.Error())
+	}
 }
 
 func testHandler(w http.ResponseWriter, r *http.Request) {
@@ -29,5 +31,8 @@ func testHandler(w http.ResponseWriter, r *http.Request) {
 	time.Sleep(time.Second / 2)
 	//w.WriteHeader(500)
 	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(r.URL.RequestURI())
+
+	if err := json.NewEncoder(w).Encode(r.URL.RequestURI()); err != nil {
+		println(err.Error())
+	}
 }
