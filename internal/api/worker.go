@@ -53,16 +53,15 @@ func doQuery(ctx context.Context, in workerItem) workerItem {
 		return result
 	}
 
-	req, err := http.NewRequest(http.MethodGet, in.url, nil)
+	ctx, cancel := context.WithTimeout(ctx, in.timeout)
+	defer cancel()
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, in.url, nil)
 	if err != nil {
 		result.response.Error = err
 		return result
 	}
 
-	ctx, cancel := context.WithTimeout(ctx, in.timeout)
-	defer cancel()
-
-	req = req.WithContext(ctx)
 	client := http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
