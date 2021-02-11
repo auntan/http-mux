@@ -1,4 +1,5 @@
 # http-mux
+![Go build](https://github.com/spawn273/http-mux/workflows/Go/badge.svg)
  
 Request:
 ```
